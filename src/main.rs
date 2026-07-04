@@ -1,3 +1,4 @@
+mod assets;
 mod inertia;
 mod layouts;
 
@@ -26,6 +27,8 @@ async fn main() {
     let app = Router::new()
         .route("/", get(home))
         .route("/about", get(about))
+        .route("/architecture", get(architecture))
+        .route("/assets/{*path}", get(assets::serve))
         .layer(TraceLayer::new_for_http())
         .with_state(inertia_config());
 
@@ -64,5 +67,29 @@ async fn about(inertia: Inertia) -> impl IntoResponse {
     inertia.render("About").layout(Layout::Plain).props(json!({
         "title": "POC em Rust",
         "stack": ["axum", "axum-inertia", "vite", "solid-js", "inertia-adapter-solid"],
+    }))
+}
+
+async fn architecture(inertia: Inertia) -> impl IntoResponse {
+    inertia.render("Architecture").layout(Layout::App).props(json!({
+        "title": "Fluxo Rust + Inertia + Solid",
+        "nodes": [
+            { "id": "handler", "label": "Rust handler", "group": "server", "x": -4.6, "y": 1.8 },
+            { "id": "facade", "label": "Inertia facade", "group": "bridge", "x": -2.2, "y": 1.8 },
+            { "id": "layout", "label": "Layout props", "group": "shared", "x": -2.2, "y": -0.4 },
+            { "id": "root", "label": "Root view", "group": "bridge", "x": 0.2, "y": 1.8 },
+            { "id": "adapter", "label": "Solid adapter", "group": "client", "x": 2.6, "y": 1.8 },
+            { "id": "solidLayout", "label": "Solid layout", "group": "client", "x": 4.8, "y": 0.6 },
+            { "id": "page", "label": "Page component", "group": "client", "x": 4.8, "y": 2.8 }
+        ],
+        "edges": [
+            { "from": "handler", "to": "facade", "label": "render(\"Architecture\")" },
+            { "from": "facade", "to": "layout", "label": "layout(Layout::App)" },
+            { "from": "facade", "to": "root", "label": "page object" },
+            { "from": "layout", "to": "root", "label": "shared layout data" },
+            { "from": "root", "to": "adapter", "label": "script[data-page]" },
+            { "from": "adapter", "to": "solidLayout", "label": "props.layout" },
+            { "from": "adapter", "to": "page", "label": "page props" }
+        ]
     }))
 }

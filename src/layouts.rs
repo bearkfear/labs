@@ -13,7 +13,8 @@ pub fn props(layout: Layout) -> Value {
             "appName": "Axum Inertia Solid",
             "nav": [
                 { "label": "Home", "href": "/" },
-                { "label": "About", "href": "/about" }
+                { "label": "About", "href": "/about" },
+                { "label": "Architecture", "href": "/architecture" }
             ],
             "server": server_info()
         }),

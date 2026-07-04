@@ -5,16 +5,19 @@
   "scripts": {
     "dev": "vite --host 127.0.0.1",
     "build": "vite build",
+    "build:release": "vite build && cargo build --release",
     "check": "tsc --noEmit",
     "test:e2e": "playwright test"
   },
   "dependencies": {
     "@solidjs/meta": "^0.29.4",
     "inertia-adapter-solid": "1.0.0-beta.8",
-    "solid-js": "^1.9.14"
+    "solid-js": "^1.9.14",
+    "three": "^0.185.1"
   },
   "devDependencies": {
     "@playwright/test": "^1.61.1",
+    "@types/three": "^0.185.0",
     "typescript": "^6.0.3",
     "vite": "^7.0.0",
     "vite-plugin-solid": "^2.11.12"

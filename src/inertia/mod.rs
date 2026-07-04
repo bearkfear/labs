@@ -59,5 +59,5 @@ where
 }
 
 pub fn inertia_config() -> InertiaConfig {
-    InertiaConfig::new(None, Box::new(root::development_root_view))
+    InertiaConfig::new(root::asset_version(), root::root_view())
 }
